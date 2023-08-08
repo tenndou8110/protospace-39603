@@ -3,6 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+  has_many :tweets
 
   # メールアドレスは必須であり、Deviseのデフォルトのバリデーションを使用
   validates :email, presence: true
@@ -21,4 +22,5 @@ class User < ApplicationRecord
 
   # 役職は必須
   validates :position, presence: true
+
 end
