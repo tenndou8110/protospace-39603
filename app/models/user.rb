@@ -23,4 +23,5 @@ class User < ApplicationRecord
   # 役職は必須
   validates :position, presence: true
 
+  validates :email, :encrypted_password, :name, :profile, :occupation, :position, presence: true
 end
