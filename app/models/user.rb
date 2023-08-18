@@ -5,6 +5,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :tweets
 
+  has_many :prototypes
+  belongs_to :user
+
   # メールアドレスは必須であり、Deviseのデフォルトのバリデーションを使用
   validates :email, presence: true
 

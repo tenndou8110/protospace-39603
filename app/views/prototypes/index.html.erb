@@ -1,3 +1,14 @@
+<h1>Prototypes</h1>
+
+<% @prototypes.each do |prototype| %>
+ <div>
+    <%= link_to prototype.title, prototype %>
+    <%= link_to 'Show', prototype %>
+  </div>
+<% end %>
+
+<%= link_to 'New Prototype', new_prototype_path %>
+
 <main class="main">
   <div class="inner">
     <%# ログインしているときは以下を表示する %>
