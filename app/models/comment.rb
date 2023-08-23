@@ -16,4 +16,7 @@ class Comment < ApplicationRecord
   
     # 役職は必須
     validates :position, presence: true
+
+    belongs_to :user
+    belongs_to :prototypes
 end

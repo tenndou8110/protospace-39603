@@ -13,25 +13,18 @@ class PrototypesController < ApplicationController
     end
   end
 
-  private
-
-  def prototype_params
-    params.require(:prototype).permit(:title, :catch_copy, :concept, :image)
-  end
-
   def index
     @prototypes = Prototype.all 
   end
 
-
   def show
     @prototype = Prototype.find(params[:id])
   end
-
+  
   def edit
     @prototype = current_user.prototypes.find(params[:id])
   end
-
+  
   def update
     @prototype = current_user.prototypes.find(params[:id])
     if @prototype.update(prototype_params)
@@ -40,10 +33,16 @@ class PrototypesController < ApplicationController
       render 'edit'
     end
   end
-
+  
   def destroy
     @prototype = current_user.prototypes.find(params[:id])
     @prototype.destroy
     redirect_to prototypes_path, notice: 'Prototype was successfully destroyed.'
   end
 end
+
+  private
+
+  def prototype_params
+    params.require(:prototype).permit(:title, :catch_copy, :concept, :image)
+  end
