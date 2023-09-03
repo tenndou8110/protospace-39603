@@ -1,48 +1,60 @@
 class PrototypesController < ApplicationController
+  before_action :contributor_confirmation, only:[:edit, :destroy, :update]
+  before_action :authenticate_user!, except: [:index, :show,]
+  before_action :set_prototype, except: [:index, :new, :create]
+
   def new
     @prototype = Prototype.new
   end
 
   def create
-    @prototype = current_user.prototypes.build(prototype_params)
+    @prototype = Prototype.new(prototype_params)
     if @prototype.save
-      redirect_to @prototype, notice: 'Prototype was successfully created.'
+      redirect_to root_path
     else
-      # バリデーションによって保存できなかった場合、新規投稿ページを再表示
-      render 'new'
+      render :new, status: :unprocessable_entity
     end
   end
-
-  def index
-    @prototypes = Prototype.all 
-  end
-
-  def show
-    @prototype = Prototype.find(params[:id])
-  end
-  
-  def edit
-    @prototype = current_user.prototypes.find(params[:id])
-  end
-  
-  def update
-    @prototype = current_user.prototypes.find(params[:id])
-    if @prototype.update(prototype_params)
-      redirect_to @prototype, notice: 'Prototype was successfully updated.'
-    else
-      render 'edit'
-    end
-  end
-  
-  def destroy
-    @prototype = current_user.prototypes.find(params[:id])
-    @prototype.destroy
-    redirect_to prototypes_path, notice: 'Prototype was successfully destroyed.'
-  end
-end
 
   private
 
   def prototype_params
-    params.require(:prototype).permit(:title, :catch_copy, :concept, :image)
+    params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
   end
+
+  def index
+    @prototypes = Prototype.includes(:user)
+  end
+
+  def show
+    @comment = Commemt.new
+    @comments = @prototype.comments
+  end
+
+  def edit
+  end
+  
+  def update
+    if @prototype.update(prototype_params)
+      redirect_to prototype_path(@prototype)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+  
+  def destroy
+    if @prototype.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
+  end
+
+  def set_prototype
+    @prototype = Prototype.find(params[:id])
+  end
+
+  def contributor_confirmation
+    redirect_to root_path unless current_user == @prototype.user
+  end
+end
