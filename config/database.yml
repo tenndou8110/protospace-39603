@@ -53,3 +53,29 @@ production:
   database: protospace_39603_production
   username: protospace_39603
   password: <%= ENV["PROTOSPACE_39603_DATABASE_PASSWORD"] %>
+
+default: &default
+  encoding: utf8
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *d
+  efault
+  adapter: mysql2
+  username: root
+  password:
+  host: localhost
+  database: protospace-39603_development
+
+test:
+  <<: *default
+  adapter: mysql2
+  username: root
+  password:
+  host: localhost
+  database: protospace-39603_test
+
+production:
+  <<: *default
+  adapter: postgresql
+  url: <%= ENV['DATABASE_URL'] %>
