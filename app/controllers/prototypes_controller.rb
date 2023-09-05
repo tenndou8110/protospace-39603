@@ -7,23 +7,23 @@ class PrototypesController < ApplicationController
     @prototype = Prototype.new
   end
 
+  def index
+    @prototypes = Prototype.all
+  end
+
   def create
     @prototype = Prototype.new(prototype_params)
     if @prototype.save
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity
-    end
+    end  
   end
 
   private
 
   def prototype_params
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
-  end
-
-  def index
-    @prototypes = Prototype.includes(:user)
   end
 
   def show
