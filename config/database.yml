@@ -60,7 +60,6 @@ default: &default
 
 development:
   <<: *default
-  efault
   adapter: mysql2
   username: root
   password:
