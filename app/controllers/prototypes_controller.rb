@@ -11,21 +11,6 @@ class PrototypesController < ApplicationController
     @prototypes = Prototype.all
   end
 
-  def create
-    @prototype = Prototype.new(prototype_params)
-    if @prototype.save
-      redirect_to root_path
-    else
-      render :new, status: :unprocessable_entity
-    end  
-  end
-
-  private
-
-  def prototype_params
-    params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
-  end
-
   def show
     @prototype = Prototype.find(params[:id])
     @comment = Comment.new
@@ -49,7 +34,22 @@ class PrototypesController < ApplicationController
     else
       redirect_to root_path
     end
+
+  def create
+    @prototype = Prototype.new(prototype_params)
+    if @prototype.save
+      redirect_to root_path
+    else
+      render :new, status: :unprocessable_entity
+    end  
   end
+
+  private
+
+  def prototype_params
+    params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
+  end
+
 
   def set_prototype
     @prototype = Prototype.find(params[:id])
