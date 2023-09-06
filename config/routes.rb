@@ -4,5 +4,5 @@ Rails.application.routes.draw do
     resources :comments, only: :create
   end
   root to: 'prototypes#index'
-  resources :users, only: [:show]
+  resources :users, only: :show
 end
